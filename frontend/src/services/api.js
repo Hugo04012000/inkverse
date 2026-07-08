@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: 'https://inkverse-production-ef81.up.railway.app/api',
 });
 
 api.interceptors.request.use(config => {
@@ -10,10 +10,10 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-export const login = (email, password) => 
+export const login = (email, password) =>
   api.post('/auth/login', { email, password });
 
-export const register = (datos) => 
+export const register = (datos) =>
   api.post('/auth/register', datos);
 
 export default api;
