@@ -1,15 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 
 export default function Layout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isMobile = window.innerWidth < 768;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', width: '100%' }}>
       {/* Overlay móvil */}
-      {mobileOpen && (
+      {isMobile && mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
           style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 99 }}
@@ -24,29 +32,33 @@ export default function Layout({ children }) {
             position: 'fixed', top: '16px', left: '16px', zIndex: 101,
             background: '#cc0000', border: 'none', color: '#fff',
             width: '40px', height: '40px', borderRadius: '6px',
-            fontSize: '18px', cursor: 'pointer'
+            fontSize: '18px', cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center'
           }}>
           ☰
         </button>
       )}
 
+      {/* Sidebar */}
       <div style={{
         position: 'fixed', top: 0, left: 0, zIndex: 100,
-        transform: isMobile ? (mobileOpen ? 'translateX(0)' : 'translateX(-100%)') : 'translateX(0)',
+        transform: isMobile && !mobileOpen ? 'translateX(-100%)' : 'translateX(0)',
         transition: 'transform 0.25s ease'
       }}>
-        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+        <Sidebar collapsed={isMobile ? false : collapsed} setCollapsed={setCollapsed} />
       </div>
 
+      {/* Contenido principal */}
       <main style={{
         marginLeft: isMobile ? '0' : (collapsed ? '70px' : '260px'),
         flex: 1,
         minHeight: '100vh',
-        padding: isMobile ? '64px 16px 24px' : '32px 40px',
+        padding: isMobile ? '60px 16px 24px 16px' : '32px 40px',
         background: '#0a0a0a',
         transition: 'margin-left 0.25s ease',
-        width: '100%',
-        overflowX: 'hidden'
+        width: isMobile ? '100%' : 'auto',
+        maxWidth: '100%',
+        boxSizing: 'border-box'
       }}>
         {children}
       </main>
