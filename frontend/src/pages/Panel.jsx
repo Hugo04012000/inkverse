@@ -21,8 +21,8 @@ export default function Panel() {
   const stats = [
     { label: 'CITAS HOY', valor: citas.length.toString(), sub: `en ${[...new Set(citas.map(c => c.box_nombre))].length} boxes`, color: '#3b82f6' },
     { label: 'INGRESOS HOY', valor: `${totalIngresos}€`, sub: 'estimados', color: '#22c55e' },
-    { label: 'VALORACIÓN', valor: '4.8★', sub: '127 reseñas', color: '#d4a017' },
-    { label: 'SEGUIDORES', valor: '4.230', sub: '+23 este mes', color: '#a855f7' },
+    { label: 'VALORACIÓN', valor: '—', sub: 'sin reseñas aún', color: '#d4a017' },
+    { label: 'SEGUIDORES', valor: '0', sub: 'empieza a crecer', color: '#a855f7' },
   ];
 
   return (
@@ -30,44 +30,26 @@ export default function Panel() {
       <h1 style={{ fontSize: '48px', fontWeight: 900, marginBottom: '4px', color: '#ffffff' }}>
         HOLA, <span style={{ color: '#cc0000' }}>{user?.nombre?.split(' ')[0]?.toUpperCase() || 'ARTISTA'}</span>
       </h1>
-      <p style={{ color: '#666', marginBottom: '32px', textTransform: 'capitalize' }}>{hoy}</p>
+      <p style={{ color: '#666', marginBottom: '24px', textTransform: 'capitalize' }}>{hoy}</p>
 
       {/* Banner Premium */}
-<div style={{
-  background: 'linear-gradient(135deg, #1a0a00, #2a1500)',
-  border: '1px solid #d4a01755',
-  borderRadius: '8px',
-  padding: '16px 24px',
-  marginBottom: '24px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
-}}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-    <span style={{ fontSize: '24px' }}>⭐</span>
-    <div>
-      <div style={{ color: '#d4a017', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>
-        PLAN PREMIUM — PRÓXIMAMENTE
+      <div style={{
+        background: 'linear-gradient(135deg, #1a0a00, #2a1500)',
+        border: '1px solid #d4a01755', borderRadius: '8px',
+        padding: '16px 24px', marginBottom: '24px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '24px' }}>⭐</span>
+          <div>
+            <div style={{ color: '#d4a017', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>PLAN PREMIUM — PRÓXIMAMENTE</div>
+            <div style={{ color: '#888', fontSize: '13px' }}>Gestión avanzada de citas, estadísticas detalladas, prioridad en búsquedas y mucho más.</div>
+          </div>
+        </div>
+        <button style={{ background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '12px', padding: '8px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          AVISARÉ CUANDO ESTÉ
+        </button>
       </div>
-      <div style={{ color: '#888', fontSize: '13px' }}>
-        Gestión avanzada de citas, estadísticas detalladas, prioridad en búsquedas y mucho más.
-      </div>
-    </div>
-  </div>
-  <button style={{
-    background: '#d4a017',
-    color: '#000',
-    fontWeight: 700,
-    fontSize: '12px',
-    padding: '8px 16px',
-    borderRadius: '4px',
-    border: 'none',
-    cursor: 'pointer',
-    whiteSpace: 'nowrap'
-  }}>
-    AVISAMÉ CUANDO ESTÉ
-  </button>
-</div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '32px' }}>
         {stats.map(({ label, valor, sub, color }) => (
