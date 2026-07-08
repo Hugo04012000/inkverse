@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://inkverse-production-ef81.up.railway.app/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://inkverse-production-ef81.up.railway.app/api',
 });
 
 api.interceptors.request.use(config => {
