@@ -1,12 +1,6 @@
 import { useAuth } from '../context/AuthContext';
-
-const portfolio = [1, 2, 3, 4, 5, 6];
-
-const reseñas = [
-  { nombre: 'María G.', fecha: '2026-06-15', puntuacion: 5, comentario: 'Alex es increíble. El resultado fue exactamente lo que pedí, incluso mejor. Muy profesional y el estudio impecable. Ya tengo reservada la siguiente sesión.' },
-  { nombre: 'Carlos R.', fecha: '2026-06-10', puntuacion: 5, comentario: 'Cuarta vez con Alex y siempre supera las expectativas. El blackwork geometric es su especialidad sin ninguna duda. 10/10.' },
-  { nombre: 'Sara M.', fecha: '2026-06-02', puntuacion: 4, comentario: 'Gran trabajo, muy detallado. Un punto menos porque el tiempo de espera fue largo. Pero el resultado final es perfecto, muy feliz.' },
-];
+import { useState, useEffect } from 'react';
+import api from '../services/api';
 
 function Estrellas({ n }) {
   return <span style={{ color: '#d4a017' }}>{'★'.repeat(n)}{'☆'.repeat(5 - n)}</span>;
@@ -14,6 +8,8 @@ function Estrellas({ n }) {
 
 export default function Perfil() {
   const { user } = useAuth();
+  const [reseñas, setReseñas] = useState([]);
+  const [portfolio, setPortfolio] = useState([1, 2, 3, 4, 5, 6]);
 
   return (
     <div>
@@ -26,18 +22,13 @@ export default function Perfil() {
             {user?.nombre?.charAt(0) || 'A'}
           </div>
           <div style={{ flex: 1 }}>
-            <h1 style={{ fontSize: '32px', fontWeight: 900, marginBottom: '4px', color: '#ffffff' }}>{user?.nombre?.toUpperCase() || 'ALEX VEGA'}</h1>
-            <p style={{ color: '#666', marginBottom: '12px' }}>📍 {user?.ciudad || 'Madrid'}</p>
+            <h1 style={{ fontSize: '32px', fontWeight: 900, marginBottom: '4px', color: '#ffffff' }}>{user?.nombre?.toUpperCase()}</h1>
+            <p style={{ color: '#666', marginBottom: '12px' }}>📍 {user?.ciudad || 'Sin ciudad'}</p>
             <p style={{ color: '#888', fontSize: '14px', marginBottom: '16px', maxWidth: '500px' }}>
-              Artista especializado en blackwork geométrico y neo-tradicional. 8 años de experiencia. Ex-ganador Convención Barcelona 2024.
+              Artista de tatuaje profesional en INKVERSE.
             </p>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-              {['Blackwork', 'Geometric', 'Neo-tradicional'].map(e => (
-                <span key={e} style={{ border: '1px solid #444', color: '#ffffff', fontSize: '12px', padding: '4px 10px', borderRadius: '4px' }}>{e}</span>
-              ))}
-            </div>
             <div style={{ display: 'flex', gap: '32px' }}>
-              {[['4.230', 'Seguidores'], ['312', 'Siguiendo'], ['127', 'Reseñas']].map(([val, label]) => (
+              {[['0', 'Seguidores'], ['0', 'Siguiendo'], ['0', 'Reseñas']].map(([val, label]) => (
                 <div key={label}>
                   <span style={{ color: '#d4a017', fontWeight: 700, fontSize: '20px' }}>{val}</span>
                   <span style={{ color: '#666', fontSize: '13px', marginLeft: '6px' }}>{label}</span>
@@ -64,20 +55,13 @@ export default function Perfil() {
             <span style={{ color: '#cc0000', fontSize: '13px', cursor: 'pointer' }}>+ AÑADIR</span>
           </div>
           <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '20px', border: '1px solid #2a2a2a', marginBottom: '12px', textAlign: 'center' }}>
-            <div style={{ color: '#d4a017', fontSize: '48px', fontWeight: 900 }}>4.7</div>
-            <Estrellas n={4} />
-            <div style={{ color: '#666', fontSize: '13px', marginTop: '4px' }}>3 valoraciones</div>
+            <div style={{ color: '#666', fontSize: '16px' }}>Sin reseñas todavía</div>
           </div>
-          {reseñas.map((r, i) => (
-            <div key={i} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '16px', border: '1px solid #2a2a2a', marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span style={{ fontWeight: 600, fontSize: '14px', color: '#ffffff' }}>{r.nombre}</span>
-                <span style={{ color: '#666', fontSize: '12px' }}>{r.fecha}</span>
-              </div>
-              <Estrellas n={r.puntuacion} />
-              <p style={{ color: '#888', fontSize: '13px', marginTop: '8px', lineHeight: 1.5 }}>{r.comentario}</p>
+          {reseñas.length === 0 && (
+            <div style={{ color: '#666', fontSize: '13px', textAlign: 'center', padding: '20px' }}>
+              Cuando recibas reseñas aparecerán aquí.
             </div>
-          ))}
+          )}
         </div>
       </div>
     </div>
