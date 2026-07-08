@@ -37,7 +37,8 @@ export default function Panel() {
         background: 'linear-gradient(135deg, #1a0a00, #2a1500)',
         border: '1px solid #d4a01755', borderRadius: '8px',
         padding: '16px 24px', marginBottom: '24px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        flexWrap: 'wrap', gap: '12px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ fontSize: '24px' }}>⭐</span>
@@ -51,6 +52,7 @@ export default function Panel() {
         </button>
       </div>
 
+      {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '32px' }}>
         {stats.map(({ label, valor, sub, color }) => (
           <div key={label} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '20px', border: '1px solid #2a2a2a' }}>
@@ -62,6 +64,7 @@ export default function Panel() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '24px' }}>
+        {/* Citas de hoy */}
         <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '24px', border: '1px solid #2a2a2a' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h3 style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '1px', color: '#ffffff' }}>CITAS DE HOY</h3>
@@ -93,6 +96,7 @@ export default function Panel() {
           )}
         </div>
 
+        {/* Acceso rápido */}
         <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '24px', border: '1px solid #2a2a2a' }}>
           <h3 style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '1px', marginBottom: '16px', color: '#ffffff' }}>ACCESO RÁPIDO</h3>
           {[
