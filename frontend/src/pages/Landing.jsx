@@ -89,7 +89,7 @@ export default function Landing() {
       <div style={{ padding: 'clamp(40px, 8vw, 80px) 20px', background: '#0d0d0d', boxSizing: 'border-box' }}>
         <p style={{ color: '#cc0000', fontSize: '11px', letterSpacing: '3px', textAlign: 'center', marginBottom: '16px' }}>FUNCIONALIDADES</p>
         <h2 style={{ fontSize: 'clamp(28px, 6vw, 48px)', fontWeight: 900, textAlign: 'center', marginBottom: '40px', color: '#ffffff' }}>TODO LO QUE NECESITAS</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1px', background: '#222', maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1px', background: '#222', maxWidth: '1000px', margin: '0 auto' }}>
           {[
             { icon: '📅', titulo: 'Gestión de Citas', desc: 'Boxes, tamaños y tiempos. Todo en un panel visual.' },
             { icon: '🎨', titulo: 'Galería de Diseños', desc: 'Comparte tus diseños y remixea el trabajo de la comunidad.' },
@@ -101,10 +101,10 @@ export default function Landing() {
             { icon: '🛡', titulo: 'Panel Admin', desc: 'Gestión de usuarios, estadísticas y exportación de datos.' },
             { icon: '⭐', titulo: 'Valoraciones', desc: 'Sistema de reseñas verificado para artistas.' },
           ].map(({ icon, titulo, desc }) => (
-            <div key={titulo} style={{ background: '#111', padding: '24px 20px' }}>
+            <div key={titulo} style={{ background: '#111', padding: '24px 16px' }}>
               <div style={{ color: '#cc0000', fontSize: '24px', marginBottom: '10px' }}>{icon}</div>
-              <div style={{ fontWeight: 700, fontSize: '15px', marginBottom: '6px', color: '#ffffff' }}>{titulo}</div>
-              <div style={{ color: '#666', fontSize: '13px', lineHeight: 1.5 }}>{desc}</div>
+              <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '6px', color: '#ffffff' }}>{titulo}</div>
+              <div style={{ color: '#666', fontSize: '12px', lineHeight: 1.5 }}>{desc}</div>
             </div>
           ))}
         </div>
