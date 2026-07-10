@@ -31,15 +31,13 @@ export default function Landing() {
   };
 
   const handleDemo = async () => {
-    setLoading(true);
     try {
       const res = await login('demo@inkverse.es', 'password');
       loginUser(res.data.user, res.data.token);
       navigate('/panel');
     } catch (err) {
-      setError('Error al entrar en demo');
+      alert('Error al entrar en demo. Inténtalo de nuevo.');
     }
-    setLoading(false);
   };
 
   return (
@@ -78,11 +76,11 @@ export default function Landing() {
           Gestiona tu estudio, conecta con la comunidad, comparte tus diseños y crece como artista.
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <button onClick={() => { setModal(true); setTab('register'); }} style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '14px', padding: '14px 28px', borderRadius: '4px', letterSpacing: '1px' }}>
+          <button onClick={() => { setModal(true); setTab('register'); }} style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '14px', padding: '14px 28px', borderRadius: '4px', letterSpacing: '1px', cursor: 'pointer' }}>
             EMPIEZA GRATIS →
           </button>
-          <button onClick={handleDemo} disabled={loading} style={{ background: '#1a1a1a', color: '#fff', fontSize: '14px', padding: '14px 28px', borderRadius: '4px', border: '1px solid #333', opacity: loading ? 0.7 : 1, cursor: 'pointer' }}>
-            {loading ? 'Cargando...' : 'Ver demo'}
+          <button onClick={handleDemo} style={{ background: '#1a1a1a', color: '#fff', fontSize: '14px', padding: '14px 28px', borderRadius: '4px', border: '1px solid #333', cursor: 'pointer' }}>
+            Ver demo
           </button>
         </div>
 
@@ -126,7 +124,7 @@ export default function Landing() {
       <div style={{ padding: 'clamp(40px, 8vw, 80px) 20px', textAlign: 'center', background: '#110000', boxSizing: 'border-box' }}>
         <h2 style={{ fontSize: 'clamp(28px, 6vw, 48px)', fontWeight: 900, marginBottom: '16px', color: '#ffffff' }}>¿LISTO PARA EMPEZAR?</h2>
         <p style={{ color: '#666', fontSize: '15px', marginBottom: '32px' }}>Únete a más de 2.400 tatuadores que ya usan INKVERSE.</p>
-        <button onClick={() => { setModal(true); setTab('register'); }} style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '15px', padding: '16px 36px', borderRadius: '4px', letterSpacing: '1px' }}>
+        <button onClick={() => { setModal(true); setTab('register'); }} style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '15px', padding: '16px 36px', borderRadius: '4px', letterSpacing: '1px', cursor: 'pointer' }}>
           CREAR CUENTA GRATIS
         </button>
       </div>
@@ -153,10 +151,10 @@ export default function Landing() {
             <h2 style={{ fontSize: '28px', fontWeight: 900, marginBottom: '20px', color: '#ffffff' }}>INKVERSE</h2>
 
             <div style={{ display: 'flex', marginBottom: '20px', borderRadius: '4px', overflow: 'hidden' }}>
-              <button onClick={() => setTab('login')} style={{ flex: 1, padding: '10px', fontWeight: 700, fontSize: '12px', letterSpacing: '1px', background: tab === 'login' ? '#cc0000' : '#111', color: '#fff', border: '1px solid #333' }}>
+              <button onClick={() => setTab('login')} style={{ flex: 1, padding: '10px', fontWeight: 700, fontSize: '12px', letterSpacing: '1px', background: tab === 'login' ? '#cc0000' : '#111', color: '#fff', border: '1px solid #333', cursor: 'pointer' }}>
                 INICIAR SESIÓN
               </button>
-              <button onClick={() => setTab('register')} style={{ flex: 1, padding: '10px', fontWeight: 700, fontSize: '12px', letterSpacing: '1px', background: tab === 'register' ? '#cc0000' : '#111', color: '#fff', border: '1px solid #333' }}>
+              <button onClick={() => setTab('register')} style={{ flex: 1, padding: '10px', fontWeight: 700, fontSize: '12px', letterSpacing: '1px', background: tab === 'register' ? '#cc0000' : '#111', color: '#fff', border: '1px solid #333', cursor: 'pointer' }}>
                 REGISTRARSE
               </button>
             </div>
@@ -184,7 +182,7 @@ export default function Landing() {
             {error && <p style={{ color: '#cc0000', fontSize: '13px', marginBottom: '10px' }}>{error}</p>}
 
             <button onClick={handleSubmit} disabled={loading}
-              style={{ width: '100%', background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '15px', padding: '14px', borderRadius: '4px', letterSpacing: '1px', opacity: loading ? 0.7 : 1, boxSizing: 'border-box' }}>
+              style={{ width: '100%', background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '15px', padding: '14px', borderRadius: '4px', letterSpacing: '1px', opacity: loading ? 0.7 : 1, boxSizing: 'border-box', cursor: 'pointer' }}>
               {loading ? 'CARGANDO...' : tab === 'login' ? 'ENTRAR' : 'CREAR CUENTA'}
             </button>
           </div>
