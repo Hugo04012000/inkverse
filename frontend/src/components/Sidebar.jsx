@@ -26,7 +26,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   const { user, logoutUser } = useAuth();
   const [notificaciones, setNotificaciones] = useState([]);
   const [mostrarNotif, setMostrarNotif] = useState(false);
- 
+
   useEffect(() => {
     cargarNotificaciones();
   }, []);
@@ -65,19 +65,15 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         flexDirection: 'column', position: 'fixed', top: 0, left: 0, zIndex: 100,
         transition: 'width 0.25s ease', overflow: 'hidden'
       }}>
-        {/* Logo */}
         <div style={{ padding: '20px', borderBottom: '1px solid #1f1f1f', display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: '260px' }}>
           {!collapsed && (
             <span style={{ color: '#cc0000', fontWeight: 900, fontSize: '22px', letterSpacing: '2px' }}>INKVERSE</span>
           )}
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '4px', marginLeft: collapsed ? '0' : 'auto' }}>
+          <button onClick={() => setCollapsed(!collapsed)} style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '4px', marginLeft: collapsed ? '0' : 'auto' }}>
             <Menu size={20} />
           </button>
         </div>
 
-        {/* Nav */}
         <nav style={{ flex: 1, padding: '16px 0', overflowY: 'auto', overflowX: 'hidden' }}>
           {navItems.map(({ to, icon: Icon, label }) => {
             const active = location.pathname === to;
@@ -97,11 +93,8 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           })}
         </nav>
 
-        {/* Bottom */}
         <div style={{ borderTop: '1px solid #1f1f1f', padding: '16px 20px', minWidth: '260px' }}>
-          <div
-            onClick={() => setMostrarNotif(true)}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', cursor: 'pointer', color: '#888' }}>
+          <div onClick={() => setMostrarNotif(true)} style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px', cursor: 'pointer', color: '#888' }}>
             <Bell size={18} style={{ flexShrink: 0 }} />
             {!collapsed && <span style={{ fontSize: '14px', color: '#ffffff' }}>Notificaciones</span>}
             {noLeidas > 0 && (
@@ -124,12 +117,12 @@ export default function Sidebar({ collapsed, setCollapsed }) {
               </>
             )}
           </div>
+          {!collapsed && (
+            <div style={{ marginTop: '8px', borderTop: '1px solid #111', paddingTop: '8px' }}>
+              <p style={{ color: '#333', fontSize: '10px' }}>© 2026 INKVERSE</p>
+            </div>
+          )}
         </div>
-        {!collapsed && (
-  <div style={{ padding: '8px 20px', borderTop: '1px solid #111' }}>
-    <p style={{ color: '#333', fontSize: '10px' }}>© 2026 INKVERSE</p>
-  </div>
-)}
       </aside>
 
       {/* Panel notificaciones */}
