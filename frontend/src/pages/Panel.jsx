@@ -8,6 +8,9 @@ export default function Panel() {
   const navigate = useNavigate();
   const [citas, setCitas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [modalPremium, setModalPremium] = useState(false);
+  const [emailPremium, setEmailPremium] = useState('');
+  const [mensajePremium, setMensajePremium] = useState('');
   const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
   useEffect(() => {
@@ -15,7 +18,21 @@ export default function Panel() {
       setCitas(res.data);
       setLoading(false);
     }).catch(() => setLoading(false));
+    if (user?.email) setEmailPremium(user.email);
   }, []);
+
+  const apuntarseListaEspera = async () => {
+    try {
+      const res = await api.post('/premium/lista-espera', { email: emailPremium });
+      setMensajePremium(res.data.mensaje);
+      setTimeout(() => {
+        setModalPremium(false);
+        setMensajePremium('');
+      }, 2000);
+    } catch (err) {
+      setMensajePremium('Error al apuntarse. Intentalo de nuevo.');
+    }
+  };
 
   const totalIngresos = citas.reduce((sum, c) => sum + Number(c.precio || 0), 0);
   const colorEstado = { confirmada: '#22c55e', pendiente: '#f97316', en_curso: '#3b82f6', cancelada: '#cc0000' };
@@ -29,6 +46,32 @@ export default function Panel() {
 
   return (
     <div>
+      {/* Modal lista espera premium */}
+      {modalPremium && (
+        <div onClick={() => setModalPremium(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '32px', width: '100%', maxWidth: '440px', borderTop: '3px solid #d4a017', position: 'relative' }}>
+            <button onClick={() => setModalPremium(false)} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', color: '#666', fontSize: '20px', border: 'none', cursor: 'pointer' }}>x</button>
+            <div style={{ fontSize: '40px', textAlign: 'center', marginBottom: '16px' }}>⭐</div>
+            <h2 style={{ fontSize: '24px', fontWeight: 900, color: '#ffffff', textAlign: 'center', marginBottom: '8px' }}>PLAN PREMIUM</h2>
+            <p style={{ color: '#888', fontSize: '14px', textAlign: 'center', marginBottom: '24px' }}>
+              Cuando el plan premium este listo te avisaremos por email. Confirma tu email y te ponemos en la lista.
+            </p>
+            <input
+              value={emailPremium}
+              onChange={e => setEmailPremium(e.target.value)}
+              placeholder="Tu email"
+              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#fff', marginBottom: '12px', fontSize: '14px', boxSizing: 'border-box' }}
+            />
+            {mensajePremium && (
+              <p style={{ color: '#22c55e', fontSize: '13px', textAlign: 'center', marginBottom: '12px' }}>{mensajePremium}</p>
+            )}
+            <button onClick={apuntarseListaEspera} style={{ width: '100%', background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '15px', padding: '14px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
+              AVISAME CUANDO ESTE LISTO
+            </button>
+          </div>
+        </div>
+      )}
+
       <h1 style={{ fontSize: '48px', fontWeight: 900, marginBottom: '4px', color: '#ffffff' }}>
         HOLA, <span style={{ color: '#cc0000' }}>{user?.nombre?.split(' ')[0]?.toUpperCase() || 'ARTISTA'}</span>
       </h1>
@@ -48,7 +91,7 @@ export default function Panel() {
             <div style={{ color: '#888', fontSize: '13px' }}>Gestion avanzada de citas, estadisticas detalladas, prioridad en busquedas y mucho mas.</div>
           </div>
         </div>
-        <button style={{ background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '12px', padding: '8px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+        <button onClick={() => setModalPremium(true)} style={{ background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '12px', padding: '8px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
           AVISAME CUANDO ESTE
         </button>
       </div>
