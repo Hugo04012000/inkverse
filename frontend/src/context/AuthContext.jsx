@@ -6,6 +6,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
@@ -17,6 +18,15 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
+  useEffect(() => {
+    if (user?.email === 'demo@inkverse.es') {
+      const timer = setTimeout(() => {
+        setMostrarRegistro(true);
+      }, 5 * 60 * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
   const loginUser = (userData, userToken) => {
     setUser(userData);
     setToken(userToken);
@@ -27,12 +37,13 @@ export function AuthProvider({ children }) {
   const logoutUser = () => {
     setUser(null);
     setToken(null);
+    setMostrarRegistro(false);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loginUser, logoutUser, loading }}>
+    <AuthContext.Provider value={{ user, token, loginUser, logoutUser, loading, mostrarRegistro, setMostrarRegistro }}>
       {children}
     </AuthContext.Provider>
   );
