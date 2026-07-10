@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 export default function Panel() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [citas, setCitas] = useState([]);
   const [loading, setLoading] = useState(true);
   const hoy = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -20,8 +22,8 @@ export default function Panel() {
 
   const stats = [
     { label: 'CITAS HOY', valor: citas.length.toString(), sub: `en ${[...new Set(citas.map(c => c.box_nombre))].length} boxes`, color: '#3b82f6' },
-    { label: 'INGRESOS HOY', valor: `${totalIngresos}€`, sub: 'estimados', color: '#22c55e' },
-    { label: 'VALORACIÓN', valor: '—', sub: 'sin reseñas aún', color: '#d4a017' },
+    { label: 'INGRESOS HOY', valor: `${totalIngresos}`, sub: 'estimados', color: '#22c55e' },
+    { label: 'VALORACION', valor: '-', sub: 'sin resenas aun', color: '#d4a017' },
     { label: 'SEGUIDORES', valor: '0', sub: 'empieza a crecer', color: '#a855f7' },
   ];
 
@@ -32,7 +34,6 @@ export default function Panel() {
       </h1>
       <p style={{ color: '#666', marginBottom: '24px', textTransform: 'capitalize' }}>{hoy}</p>
 
-      {/* Banner Premium */}
       <div style={{
         background: 'linear-gradient(135deg, #1a0a00, #2a1500)',
         border: '1px solid #d4a01755', borderRadius: '8px',
@@ -43,16 +44,15 @@ export default function Panel() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <span style={{ fontSize: '24px' }}>⭐</span>
           <div>
-            <div style={{ color: '#d4a017', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>PLAN PREMIUM — PRÓXIMAMENTE</div>
-            <div style={{ color: '#888', fontSize: '13px' }}>Gestión avanzada de citas, estadísticas detalladas, prioridad en búsquedas y mucho más.</div>
+            <div style={{ color: '#d4a017', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>PLAN PREMIUM - PROXIMAMENTE</div>
+            <div style={{ color: '#888', fontSize: '13px' }}>Gestion avanzada de citas, estadisticas detalladas, prioridad en busquedas y mucho mas.</div>
           </div>
         </div>
         <button style={{ background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '12px', padding: '8px 16px', borderRadius: '4px', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
-          AVISARÉ CUANDO ESTÉ
+          AVISAME CUANDO ESTE
         </button>
       </div>
 
-      {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '32px' }}>
         {stats.map(({ label, valor, sub, color }) => (
           <div key={label} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '20px', border: '1px solid #2a2a2a' }}>
@@ -64,11 +64,10 @@ export default function Panel() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: '24px' }}>
-        {/* Citas de hoy */}
         <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '24px', border: '1px solid #2a2a2a' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h3 style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '1px', color: '#ffffff' }}>CITAS DE HOY</h3>
-            <span style={{ color: '#cc0000', fontSize: '13px', cursor: 'pointer' }}>VER TODO →</span>
+            <span onClick={() => navigate('/citas')} style={{ color: '#cc0000', fontSize: '13px', cursor: 'pointer' }}>VER TODO</span>
           </div>
           {loading ? (
             <p style={{ color: '#666' }}>Cargando...</p>
@@ -96,16 +95,15 @@ export default function Panel() {
           )}
         </div>
 
-        {/* Acceso rápido */}
         <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '24px', border: '1px solid #2a2a2a' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '1px', marginBottom: '16px', color: '#ffffff' }}>ACCESO RÁPIDO</h3>
+          <h3 style={{ fontSize: '14px', fontWeight: 700, letterSpacing: '1px', marginBottom: '16px', color: '#ffffff' }}>ACCESO RAPIDO</h3>
           {[
-            { label: 'Nueva cita', icon: '+' },
-            { label: 'Subir diseño', icon: '🎨' },
-            { label: 'Ver eventos', icon: '🎤' },
-            { label: 'Foro', icon: '💬' },
-          ].map(({ label, icon }) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #222', cursor: 'pointer' }}>
+            { label: 'Nueva cita', icon: '+', ruta: '/citas' },
+            { label: 'Subir diseno', icon: '🎨', ruta: '/disenos' },
+            { label: 'Ver eventos', icon: '🎤', ruta: '/eventos' },
+            { label: 'Foro', icon: '💬', ruta: '/foro' },
+          ].map(({ label, icon, ruta }) => (
+            <div key={label} onClick={() => navigate(ruta)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderBottom: '1px solid #222', cursor: 'pointer' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px', color: '#ffffff' }}>
                 <span style={{ color: '#cc0000' }}>{icon}</span>
                 {label}
