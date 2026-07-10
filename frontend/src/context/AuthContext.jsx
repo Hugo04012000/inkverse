@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
     if (user?.email === 'demo@inkverse.es') {
       const timer = setTimeout(() => {
         setMostrarRegistro(true);
-      }, 5 * 60 * 1000);
+      }, 10 * 1000);
       return () => clearTimeout(timer);
     }
   }, [user]);
