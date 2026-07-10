@@ -30,6 +30,18 @@ export default function Landing() {
     setLoading(false);
   };
 
+  const handleDemo = async () => {
+    setLoading(true);
+    try {
+      const res = await login('demo@inkverse.es', 'password');
+      loginUser(res.data.user, res.data.token);
+      navigate('/panel');
+    } catch (err) {
+      setError('Error al entrar en demo');
+    }
+    setLoading(false);
+  };
+
   return (
     <div style={{ background: '#0a0a0a', minHeight: '100vh', color: '#fff', overflowX: 'hidden', width: '100%', boxSizing: 'border-box' }}>
 
@@ -69,8 +81,8 @@ export default function Landing() {
           <button onClick={() => { setModal(true); setTab('register'); }} style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '14px', padding: '14px 28px', borderRadius: '4px', letterSpacing: '1px' }}>
             EMPIEZA GRATIS →
           </button>
-          <button style={{ background: '#1a1a1a', color: '#fff', fontSize: '14px', padding: '14px 28px', borderRadius: '4px', border: '1px solid #333' }}>
-            Ver demo
+          <button onClick={handleDemo} disabled={loading} style={{ background: '#1a1a1a', color: '#fff', fontSize: '14px', padding: '14px 28px', borderRadius: '4px', border: '1px solid #333', opacity: loading ? 0.7 : 1, cursor: 'pointer' }}>
+            {loading ? 'Cargando...' : 'Ver demo'}
           </button>
         </div>
 
