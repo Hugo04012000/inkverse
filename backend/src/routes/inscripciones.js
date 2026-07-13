@@ -50,4 +50,39 @@ router.get('/mis-eventos', verificarToken, async (req, res) => {
   }
 });
 
+router.post('/competiciones/:id', verificarToken, async (req, res) => {
+  try {
+    const existe = await pool.query(
+      'SELECT id FROM inscripciones_competiciones WHERE usuario_id = $1 AND competicion_id = $2',
+      [req.usuario.id, req.params.id]
+    );
+    if (existe.rows.length > 0) {
+      return res.status(400).json({ error: 'Ya estas inscrito en esta competicion' });
+    }
+    await pool.query(
+      'INSERT INTO inscripciones_competiciones (usuario_id, competicion_id) VALUES ($1, $2)',
+      [req.usuario.id, req.params.id]
+    );
+    await pool.query(
+      'UPDATE competiciones SET artistas_inscritos = artistas_inscritos + 1 WHERE id = $1',
+      [req.params.id]
+    );
+    res.json({ mensaje: 'Inscripcion realizada correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/mis-competiciones', verificarToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT competicion_id FROM inscripciones_competiciones WHERE usuario_id = $1',
+      [req.usuario.id]
+    );
+    res.json(result.rows.map(r => r.competicion_id));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
