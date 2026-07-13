@@ -18,43 +18,44 @@ export default function Foro() {
   const [nuevoPost, setNuevoPost] = useState(false);
   const [form, setForm] = useState({ titulo: '', contenido: '', categoria: 'General' });
 
-  useEffect(() => {
+  useEffect(function() {
     cargarPosts();
   }, []);
 
-  const cargarPosts = async () => {
-    try {
-      const res = await api.get('/foro');
+  function cargarPosts() {
+    api.get('/foro').then(function(res) {
       setPosts(res.data);
-    } catch (err) {
-      console.error('Error:', err);
-    }
-    setLoading(false);
-  };
+      setLoading(false);
+    }).catch(function() {
+      setLoading(false);
+    });
+  }
 
-  const crearPost = async () => {
-    try {
-      await api.post('/foro', form);
+  function crearPost() {
+    api.post('/foro', form).then(function() {
       setNuevoPost(false);
       setForm({ titulo: '', contenido: '', categoria: 'General' });
       cargarPosts();
-    } catch (err) {
+    }).catch(function(err) {
       console.error('Error:', err);
-    }
-  };
+    });
+  }
 
-  const darLike = async (e, id) => {
+  function darLike(e, id) {
     e.preventDefault();
     e.stopPropagation();
-    try {
-      await api.put('/foro/' + id + '/like');
+    api.put('/foro/' + id + '/like').then(function() {
       cargarPosts();
-    } catch (err) {
+    }).catch(function(err) {
       console.error('Error:', err);
-    }
-  };
+    });
+  }
 
-  const filtrados = catActiva === 'Todos'
+  function irAPost(id) {
+    window.location.href = '/foro/' + id;
+  }
+
+  var filtrados = catActiva === 'Todos'
     ? posts
     : posts.filter(function(p) { return p.categoria === catActiva; });
 
@@ -65,35 +66,35 @@ export default function Foro() {
           <p style={{ color: '#666', fontSize: '12px', letterSpacing: '2px', marginBottom: '4px' }}>COMUNIDAD</p>
           <h1 style={{ fontSize: '48px', fontWeight: 900, color: '#ffffff' }}>FORO</h1>
         </div>
-        <button onClick={() => setNuevoPost(true)} style={{ background: '#cc0000', color: '#ffffff', padding: '10px 20px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', border: 'none', cursor: 'pointer' }}>
+        <button onClick={function() { setNuevoPost(true); }} style={{ background: '#cc0000', color: '#ffffff', padding: '10px 20px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', border: 'none', cursor: 'pointer' }}>
           + NUEVO POST
         </button>
       </div>
 
       {nuevoPost && (
-        <div onClick={() => setNuevoPost(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200 }}>
+        <div onClick={function() { setNuevoPost(false); }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200 }}>
           <div onClick={function(e) { e.stopPropagation(); }} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '32px', width: '100%', maxWidth: '500px', border: '1px solid #333' }}>
             <h2 style={{ fontWeight: 900, fontSize: '24px', marginBottom: '24px', color: '#ffffff' }}>NUEVO POST</h2>
             <input
               placeholder="Titulo"
               value={form.titulo}
-              onChange={function(e) { setForm({ ...form, titulo: e.target.value }); }}
+              onChange={function(e) { setForm({ titulo: e.target.value, contenido: form.contenido, categoria: form.categoria }); }}
               style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px', boxSizing: 'border-box' }}
             />
             <select
               value={form.categoria}
-              onChange={function(e) { setForm({ ...form, categoria: e.target.value }); }}
+              onChange={function(e) { setForm({ titulo: form.titulo, contenido: form.contenido, categoria: e.target.value }); }}
               style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px', boxSizing: 'border-box' }}>
-              <option>General</option>
-              <option>Tecnicas</option>
-              <option>Equipamiento</option>
-              <option>Arte</option>
-              <option>Eventos</option>
+              <option value="General">General</option>
+              <option value="Tecnicas">Tecnicas</option>
+              <option value="Equipamiento">Equipamiento</option>
+              <option value="Arte">Arte</option>
+              <option value="Eventos">Eventos</option>
             </select>
             <textarea
               placeholder="Contenido del post..."
               value={form.contenido}
-              onChange={function(e) { setForm({ ...form, contenido: e.target.value }); }}
+              onChange={function(e) { setForm({ titulo: form.titulo, contenido: e.target.value, categoria: form.categoria }); }}
               rows={5}
               style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '16px', fontSize: '14px', resize: 'vertical', boxSizing: 'border-box' }}
             />
@@ -101,7 +102,7 @@ export default function Foro() {
               <button onClick={crearPost} style={{ flex: 1, background: '#cc0000', color: '#ffffff', fontWeight: 700, padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
                 PUBLICAR
               </button>
-              <button onClick={() => setNuevoPost(false)} style={{ flex: 1, background: '#333', color: '#ffffff', padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
+              <button onClick={function() { setNuevoPost(false); }} style={{ flex: 1, background: '#333', color: '#ffffff', padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
                 CANCELAR
               </button>
             </div>
@@ -112,7 +113,7 @@ export default function Foro() {
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
         {categorias.map(function(cat) {
           return (
-            <button key={cat} onClick={() => setCatActiva(cat)} style={{
+            <button key={cat} onClick={function() { setCatActiva(cat); }} style={{
               padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 600,
               background: catActiva === cat ? '#cc0000' : 'transparent',
               color: catActiva === cat ? '#ffffff' : '#888',
@@ -129,12 +130,12 @@ export default function Foro() {
           <p style={{ color: '#666', padding: '24px', textAlign: 'center' }}>No hay posts en esta categoria todavia.</p>
         ) : filtrados.map(function(post, i) {
           return (
-            
+            <div
               key={i}
-              href={'/foro/' + post.id}
+              onClick={function() { irAPost(post.id); }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 24px',
-                borderBottom: '1px solid #222', cursor: 'pointer', textDecoration: 'none',
+                borderBottom: '1px solid #222', cursor: 'pointer',
                 borderLeft: post.fijado ? '3px solid #cc0000' : '3px solid transparent'
               }}>
               <div style={{ flex: 1 }}>
@@ -150,7 +151,7 @@ export default function Foro() {
                 <span>{post.vistas}</span>
                 <span onClick={function(e) { darLike(e, post.id); }} style={{ cursor: 'pointer' }}>♡ {post.likes}</span>
               </div>
-            </a>
+            </div>
           );
         })}
       </div>
