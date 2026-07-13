@@ -126,7 +126,7 @@ export default function Foro() {
         ) : filtrados.map((post, i) => (
           
             key={i}
-            href={`/foro/${post.id}`}
+            href={'/foro/' + post.id}
             style={{
               display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 24px',
               borderBottom: '1px solid #222', cursor: 'pointer', textDecoration: 'none',
