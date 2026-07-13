@@ -47,7 +47,13 @@ export default function Eventos() {
         setMensajeModal('');
       }, 2000);
     }).catch(function(err) {
-      setMensajeModal(err.response?.data?.error || 'Error al inscribirse');
+      var errorMsg = 'Error al inscribirse';
+      if (err.response && err.response.data && err.response.data.error) {
+        errorMsg = err.response.data.error;
+      } else if (err.response && err.response.data) {
+        errorMsg = 'Error: ' + JSON.stringify(err.response.data);
+      }
+      setMensajeModal(errorMsg);
     }).finally(function() {
       setInscribiendo(false);
     });
@@ -78,12 +84,12 @@ export default function Eventos() {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ color: '#ccc', fontSize: '14px' }}>Precio de inscripcion</span>
                 <span style={{ color: Number(modalEvento.precio) === 0 ? '#22c55e' : '#d4a017', fontWeight: 700, fontSize: '20px' }}>
-                  {Number(modalEvento.precio) === 0 ? 'GRATIS' : modalEvento.precio + 'EUR'}
+                  {Number(modalEvento.precio) === 0 ? 'GRATIS' : modalEvento.precio + ' EUR'}
                 </span>
               </div>
             </div>
             {mensajeModal ? (
-              <p style={{ color: '#22c55e', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>{mensajeModal}</p>
+              <p style={{ color: mensajeModal.includes('correctamente') ? '#22c55e' : '#cc0000', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>{mensajeModal}</p>
             ) : (
               <button
                 onClick={inscribirse}
@@ -139,7 +145,7 @@ export default function Eventos() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                     <h3 style={{ fontWeight: 700, fontSize: '16px', flex: 1, marginRight: '12px', color: '#ffffff' }}>{e.titulo}</h3>
                     <span style={{ color: Number(e.precio) === 0 ? '#22c55e' : '#d4a017', fontWeight: 700, fontSize: '16px', whiteSpace: 'nowrap' }}>
-                      {Number(e.precio) === 0 ? 'GRATIS' : e.precio + 'EUR'}
+                      {Number(e.precio) === 0 ? 'GRATIS' : e.precio + ' EUR'}
                     </span>
                   </div>
                   <p style={{ color: '#666', fontSize: '13px', marginBottom: '16px', lineHeight: 1.5 }}>{e.descripcion}</p>
