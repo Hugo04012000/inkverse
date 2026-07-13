@@ -13,6 +13,7 @@ import Marcas from './pages/Marcas';
 import Busqueda from './pages/Busqueda';
 import Admin from './pages/Admin';
 import Perfil from './pages/Perfil';
+import PostDetalle from './pages/PostDetalle';
 
 function ModalRegistro() {
   const { mostrarRegistro, setMostrarRegistro, logoutUser } = useAuth();
@@ -23,17 +24,17 @@ function ModalRegistro() {
       <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '40px 32px', width: '100%', maxWidth: '480px', textAlign: 'center', borderTop: '3px solid #cc0000' }}>
         <div style={{ fontSize: '48px', marginBottom: '16px' }}>⭐</div>
         <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#ffffff', marginBottom: '12px' }}>
-          ¿Te ha gustado INKVERSE?
+          Te ha gustado INKVERSE?
         </h2>
         <p style={{ color: '#888', fontSize: '15px', marginBottom: '8px', lineHeight: 1.6 }}>
-          Tu demo de 5 minutos ha terminado. Regístrate gratis para acceder a todas las funcionalidades sin límite de tiempo.
+          Tu demo de 5 minutos ha terminado. Registrate gratis para acceder a todas las funcionalidades sin limite de tiempo.
         </p>
         <p style={{ color: '#d4a017', fontSize: '13px', marginBottom: '32px' }}>
-          Sin tarjeta de crédito. Sin compromiso.
+          Sin tarjeta de credito. Sin compromiso.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <button
-            onClick={() => { logoutUser(); window.location.href = '/?registro=true'; }}
+            onClick={() => { logoutUser(); window.location.href = '/'; }}
             style={{ background: '#cc0000', color: '#fff', fontWeight: 700, fontSize: '15px', padding: '14px', borderRadius: '4px', cursor: 'pointer', border: 'none' }}>
             CREAR CUENTA GRATIS
           </button>
@@ -65,6 +66,7 @@ function AppRoutes() {
         <Route path="/citas" element={<RutaProtegida><Citas /></RutaProtegida>} />
         <Route path="/disenos" element={<RutaProtegida><Disenos /></RutaProtegida>} />
         <Route path="/foro" element={<RutaProtegida><Foro /></RutaProtegida>} />
+        <Route path="/foro/:id" element={<RutaProtegida><PostDetalle /></RutaProtegida>} />
         <Route path="/herramientas" element={<RutaProtegida><Herramientas /></RutaProtegida>} />
         <Route path="/eventos" element={<RutaProtegida><Eventos /></RutaProtegida>} />
         <Route path="/competiciones" element={<RutaProtegida><Competiciones /></RutaProtegida>} />
