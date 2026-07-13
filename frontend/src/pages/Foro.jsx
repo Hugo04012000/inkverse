@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const categorias = ['Todos', 'General', 'Tecnicas', 'Equipamiento', 'Arte', 'Eventos'];
@@ -17,6 +18,7 @@ export default function Foro() {
   const [loading, setLoading] = useState(true);
   const [nuevoPost, setNuevoPost] = useState(false);
   const [form, setForm] = useState({ titulo: '', contenido: '', categoria: 'General' });
+  const navigate = useNavigate();
 
   useEffect(() => {
     cargarPosts();
@@ -43,7 +45,9 @@ export default function Foro() {
     }
   };
 
-  const darLike = async (id) => {
+  const darLike = async (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
       await api.put(`/foro/${id}/like`);
       cargarPosts();
@@ -63,7 +67,7 @@ export default function Foro() {
           <p style={{ color: '#666', fontSize: '12px', letterSpacing: '2px', marginBottom: '4px' }}>COMUNIDAD</p>
           <h1 style={{ fontSize: '48px', fontWeight: 900, color: '#ffffff' }}>FORO</h1>
         </div>
-        <button onClick={() => setNuevoPost(true)} style={{ background: '#cc0000', color: '#ffffff', padding: '10px 20px', borderRadius: '4px', fontWeight: 700, fontSize: '13px' }}>
+        <button onClick={() => setNuevoPost(true)} style={{ background: '#cc0000', color: '#ffffff', padding: '10px 20px', borderRadius: '4px', fontWeight: 700, fontSize: '13px', border: 'none', cursor: 'pointer' }}>
           + NUEVO POST
         </button>
       </div>
@@ -120,11 +124,14 @@ export default function Foro() {
         ) : filtrados.length === 0 ? (
           <p style={{ color: '#666', padding: '24px', textAlign: 'center' }}>No hay posts en esta categoria todavia.</p>
         ) : filtrados.map((post, i) => (
-          <div key={i} style={{
-            display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 24px',
-            borderBottom: '1px solid #222', cursor: 'pointer',
-            borderLeft: post.fijado ? '3px solid #cc0000' : '3px solid transparent'
-          }}>
+          
+            key={i}
+            href={`/foro/${post.id}`}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 24px',
+              borderBottom: '1px solid #222', cursor: 'pointer', textDecoration: 'none',
+              borderLeft: post.fijado ? '3px solid #cc0000' : '3px solid transparent'
+            }}>
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '6px' }}>
                 {post.fijado && <span style={{ color: '#cc0000', fontSize: '11px', fontWeight: 700, letterSpacing: '1px' }}>FIJADO</span>}
@@ -134,11 +141,11 @@ export default function Foro() {
               <div style={{ color: '#666', fontSize: '12px' }}>{post.autor_nombre} · {new Date(post.fecha).toLocaleDateString('es-ES')}</div>
             </div>
             <div style={{ display: 'flex', gap: '24px', color: '#666', fontSize: '13px', alignItems: 'center' }}>
-              <span>0</span>
-              <span>{post.vistas}</span>
-              <span onClick={() => darLike(post.id)} style={{ cursor: 'pointer' }}>♡ {post.likes}</span>
+              <span>💬 {post.respuestas || 0}</span>
+              <span>👁 {post.vistas}</span>
+              <span onClick={(e) => darLike(e, post.id)} style={{ cursor: 'pointer' }}>♡ {post.likes}</span>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
