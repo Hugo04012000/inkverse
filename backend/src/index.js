@@ -20,6 +20,7 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/disenos', require('./routes/disenos'));
 app.use('/api/notificaciones', require('./routes/notificaciones'));
 app.use('/api/premium', require('./routes/premium'));
+app.use('/api/inscripciones', require('./routes/inscripciones'));
 
 app.get('/', (req, res) => {
   res.json({ mensaje: 'INKVERSE API funcionando' });
