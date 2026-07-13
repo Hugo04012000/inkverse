@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 
-const categorias = ['Todos', 'General', 'Técnicas', 'Equipamiento', 'Arte', 'Eventos'];
+const categorias = ['Todos', 'General', 'Tecnicas', 'Equipamiento', 'Arte', 'Eventos'];
 
 const coloresCat = {
   Equipamiento: '#d4a017',
   Eventos: '#3b82f6',
-  Técnicas: '#22c55e',
+  Tecnicas: '#22c55e',
   General: '#888',
   Arte: '#a855f7',
 };
@@ -73,29 +73,29 @@ export default function Foro() {
           <div onClick={e => e.stopPropagation()} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '32px', width: '100%', maxWidth: '500px', border: '1px solid #333' }}>
             <h2 style={{ fontWeight: 900, fontSize: '24px', marginBottom: '24px', color: '#ffffff' }}>NUEVO POST</h2>
             <input
-              placeholder="Título"
+              placeholder="Titulo"
               value={form.titulo}
               onChange={e => setForm({ ...form, titulo: e.target.value })}
-              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px' }}
+              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px', boxSizing: 'border-box' }}
             />
             <select
               value={form.categoria}
               onChange={e => setForm({ ...form, categoria: e.target.value })}
-              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px' }}>
-              {['General', 'Técnicas', 'Equipamiento', 'Arte', 'Eventos'].map(c => <option key={c}>{c}</option>)}
+              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '12px', fontSize: '14px', boxSizing: 'border-box' }}>
+              {['General', 'Tecnicas', 'Equipamiento', 'Arte', 'Eventos'].map(c => <option key={c}>{c}</option>)}
             </select>
             <textarea
               placeholder="Contenido del post..."
               value={form.contenido}
               onChange={e => setForm({ ...form, contenido: e.target.value })}
               rows={5}
-              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '16px', fontSize: '14px', resize: 'vertical' }}
+              style={{ width: '100%', background: '#111', border: '1px solid #333', borderRadius: '4px', padding: '12px', color: '#ffffff', marginBottom: '16px', fontSize: '14px', resize: 'vertical', boxSizing: 'border-box' }}
             />
             <div style={{ display: 'flex', gap: '12px' }}>
-              <button onClick={crearPost} style={{ flex: 1, background: '#cc0000', color: '#ffffff', fontWeight: 700, padding: '12px', borderRadius: '4px' }}>
+              <button onClick={crearPost} style={{ flex: 1, background: '#cc0000', color: '#ffffff', fontWeight: 700, padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
                 PUBLICAR
               </button>
-              <button onClick={() => setNuevoPost(false)} style={{ flex: 1, background: '#333', color: '#ffffff', padding: '12px', borderRadius: '4px' }}>
+              <button onClick={() => setNuevoPost(false)} style={{ flex: 1, background: '#333', color: '#ffffff', padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
                 CANCELAR
               </button>
             </div>
@@ -103,7 +103,7 @@ export default function Foro() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
         {categorias.map(cat => (
           <button key={cat} onClick={() => setCatActiva(cat)} style={{
             padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 600,
@@ -117,6 +117,8 @@ export default function Foro() {
       <div style={{ background: '#1a1a1a', borderRadius: '8px', border: '1px solid #2a2a2a' }}>
         {loading ? (
           <p style={{ color: '#666', padding: '24px' }}>Cargando posts...</p>
+        ) : filtrados.length === 0 ? (
+          <p style={{ color: '#666', padding: '24px', textAlign: 'center' }}>No hay posts en esta categoria todavia.</p>
         ) : filtrados.map((post, i) => (
           <div key={i} style={{
             display: 'flex', alignItems: 'center', gap: '16px', padding: '20px 24px',
@@ -132,8 +134,8 @@ export default function Foro() {
               <div style={{ color: '#666', fontSize: '12px' }}>{post.autor_nombre} · {new Date(post.fecha).toLocaleDateString('es-ES')}</div>
             </div>
             <div style={{ display: 'flex', gap: '24px', color: '#666', fontSize: '13px', alignItems: 'center' }}>
-              <span>💬 {post.respuestas || 0}</span>
-              <span>👁 {post.vistas}</span>
+              <span>0</span>
+              <span>{post.vistas}</span>
               <span onClick={() => darLike(post.id)} style={{ cursor: 'pointer' }}>♡ {post.likes}</span>
             </div>
           </div>
