@@ -39,24 +39,22 @@ export default function Eventos() {
     if (!modalEvento) return;
     setInscribiendo(true);
     api.post('/inscripciones/eventos/' + modalEvento.id, {}).then(function() {
-      setMensajeModal('Inscripcion realizada correctamente');
+      setMensajeModal('correctamente');
       setMisEventos(function(prev) { return [...prev, modalEvento.id]; });
       cargarEventos();
-      setTimeout(function() {
-        setModalEvento(null);
-        setMensajeModal('');
-      }, 2000);
     }).catch(function(err) {
       var errorMsg = 'Error al inscribirse';
       if (err.response && err.response.data && err.response.data.error) {
         errorMsg = err.response.data.error;
-      } else if (err.response && err.response.data) {
-        errorMsg = 'Error: ' + JSON.stringify(err.response.data);
       }
       setMensajeModal(errorMsg);
     }).finally(function() {
       setInscribiendo(false);
     });
+  }
+
+  function irWebOficial(url) {
+    window.open(url, '_blank');
   }
 
   var filtrados = eventos.filter(function(e) {
@@ -75,21 +73,36 @@ export default function Eventos() {
 
       {modalEvento && (
         <div onClick={function() { setModalEvento(null); setMensajeModal(''); }} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: '20px' }}>
-          <div onClick={function(e) { e.stopPropagation(); }} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '32px', width: '100%', maxWidth: '440px', borderTop: '3px solid #cc0000', position: 'relative' }}>
+          <div onClick={function(ev) { ev.stopPropagation(); }} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '32px', width: '100%', maxWidth: '440px', borderTop: '3px solid #cc0000', position: 'relative' }}>
             <button onClick={function() { setModalEvento(null); setMensajeModal(''); }} style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', color: '#666', fontSize: '20px', border: 'none', cursor: 'pointer' }}>x</button>
             <h2 style={{ fontSize: '22px', fontWeight: 900, color: '#ffffff', marginBottom: '8px' }}>{modalEvento.titulo}</h2>
-            <p style={{ color: '#888', fontSize: '13px', marginBottom: '8px' }}>📍 {modalEvento.ciudad} · 📅 {new Date(modalEvento.fecha).toLocaleDateString('es-ES')}</p>
+            <p style={{ color: '#888', fontSize: '13px', marginBottom: '8px' }}>📍 {modalEvento.ciudad}</p>
             <p style={{ color: '#888', fontSize: '13px', marginBottom: '24px' }}>{modalEvento.plazas_ocupadas}/{modalEvento.plazas_total} plazas ocupadas</p>
             <div style={{ background: '#111', borderRadius: '6px', padding: '16px', marginBottom: '24px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ color: '#ccc', fontSize: '14px' }}>Precio de inscripcion</span>
+                <span style={{ color: '#ccc', fontSize: '14px' }}>Precio</span>
                 <span style={{ color: Number(modalEvento.precio) === 0 ? '#22c55e' : '#d4a017', fontWeight: 700, fontSize: '20px' }}>
                   {Number(modalEvento.precio) === 0 ? 'GRATIS' : modalEvento.precio + ' EUR'}
                 </span>
               </div>
             </div>
-            {mensajeModal ? (
-              <p style={{ color: mensajeModal.includes('correctamente') ? '#22c55e' : '#cc0000', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>{mensajeModal}</p>
+
+            {mensajeModal === 'correctamente' ? (
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ color: '#22c55e', fontSize: '14px', marginBottom: '16px' }}>Inscripcion guardada correctamente</p>
+                {modalEvento.url_oficial ? (
+                  <button
+                    onClick={function() { irWebOficial(modalEvento.url_oficial); }}
+                    style={{ width: '100%', background: '#d4a017', color: '#000', fontWeight: 700, fontSize: '14px', padding: '12px', borderRadius: '4px', border: 'none', cursor: 'pointer', marginBottom: '8px' }}>
+                    IR A LA WEB OFICIAL DEL EVENTO
+                  </button>
+                ) : null}
+                <button onClick={function() { setModalEvento(null); setMensajeModal(''); }} style={{ background: 'transparent', color: '#666', fontSize: '13px', padding: '8px', border: 'none', cursor: 'pointer' }}>
+                  Cerrar
+                </button>
+              </div>
+            ) : mensajeModal ? (
+              <p style={{ color: '#cc0000', fontSize: '14px', textAlign: 'center', marginBottom: '16px' }}>{mensajeModal}</p>
             ) : (
               <button
                 onClick={inscribirse}
