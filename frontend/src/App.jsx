@@ -14,6 +14,7 @@ import Busqueda from './pages/Busqueda';
 import Admin from './pages/Admin';
 import Perfil from './pages/Perfil';
 import PostDetalle from './pages/PostDetalle';
+import ArticuloDetalle from './pages/ArticuloDetalle';
 
 function ModalRegistro() {
   const { mostrarRegistro, setMostrarRegistro, logoutUser } = useAuth();
@@ -67,6 +68,7 @@ function AppRoutes() {
         <Route path="/disenos" element={<RutaProtegida><Disenos /></RutaProtegida>} />
         <Route path="/foro" element={<RutaProtegida><Foro /></RutaProtegida>} />
         <Route path="/foro/:id" element={<RutaProtegida><PostDetalle /></RutaProtegida>} />
+        <Route path="/herramientas/:id" element={<RutaProtegida><ArticuloDetalle /></RutaProtegida>} />
         <Route path="/herramientas" element={<RutaProtegida><Herramientas /></RutaProtegida>} />
         <Route path="/eventos" element={<RutaProtegida><Eventos /></RutaProtegida>} />
         <Route path="/competiciones" element={<RutaProtegida><Competiciones /></RutaProtegida>} />
