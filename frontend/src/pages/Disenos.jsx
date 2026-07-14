@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 
-const filtros = ['Todos', 'Geometric', 'Floral', 'Japonés', 'Tradicional', 'Mandala', 'Neo-tradicional', 'Blackwork', 'Watercolor'];
-
+const filtros = ['Todos', 'Blackwork', 'Realismo', 'Japonés', 'Neo-tradicional', 'Tradicional', 'Watercolor', 'Geometric', 'Fineline', 'Mandala', 'Floral', 'Tribal', 'Lettering', 'Biomecánico', 'Cover-up', 'Minimalista', 'Puntillismo', 'Surrealista', 'Anime', 'Celtíco'];
 export default function Disenos() {
   const [disenos, setDisenos] = useState([]);
   const [loading, setLoading] = useState(true);
