@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
       SELECT t.*, u.nombre, u.ciudad, u.foto_url
       FROM tatuadores t
       JOIN usuarios u ON t.usuario_id = u.id
-      WHERE u.activo = true
+      WHERE u.activo = true AND u.email != 'demo@inkverse.es'
     `;
     const params = [];
     if (ciudad && ciudad !== 'Todas') {
